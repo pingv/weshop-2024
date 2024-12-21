@@ -58,7 +58,7 @@ public class Application {
 			});
 			System.out.println("");
 
-
+			//TODO: Remove this code
 			System.out.println("--------------------------------------------");
 			repository.findByFirstNameStartingWith("J").forEach(j -> {
 				System.out.println(j.toString());
