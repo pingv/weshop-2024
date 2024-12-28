@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
+
+    <changeSet id="002-1" author="vishnu">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                SELECT COUNT(*) FROM employee WHERE employee_id = 1
+            </sqlCheck>
+        </preConditions>
+        <insert tableName="employee">
+            <column name="employee_id" value="1"/>
+            <column name="first_name" value="John"/>
+            <column name="last_name" value="Doe"/>
+            <column name="email" value="john.doe@example.com"/>
+            <column name="department" value="HR"/>
+            <column name="salary" value="50000"/>
+            <column name="created_at" valueDate="2023-01-01T00:00:00"/>
+            <column name="modified_at" valueDate="2023-01-01T00:00:00"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="002-2" author="vishnu">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                SELECT COUNT(*) FROM employee WHERE employee_id = 2
+            </sqlCheck>
+        </preConditions>
+        <insert tableName="employee">
+            <column name="employee_id" value="2"/>
+            <column name="first_name" value="Jane"/>
+            <column name="last_name" value="Smith"/>
+            <column name="email" value="jane.smith@example.com"/>
+            <column name="department" value="Finance"/>
+            <column name="salary" value="60000"/>
+            <column name="created_at" valueDate="2023-01-01T00:00:00"/>
+            <column name="modified_at" valueDate="2023-01-01T00:00:00"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="002-3" author="vishnu">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                SELECT COUNT(*) FROM employee WHERE employee_id = 3
+            </sqlCheck>
+        </preConditions>
+        <insert tableName="employee">
+            <column name="employee_id" value="3"/>
+            <column name="first_name" value="Alice"/>
+            <column name="last_name" value="Johnson"/>
+            <column name="email" value="alice.johnson@example.com"/>
+            <column name="department" value="HR"/>
+            <column name="salary" value="50000"/>
+            <column name="created_at" valueDate="2023-01-01T00:00:00"/>
+            <column name="modified_at" valueDate="2023-01-01T00:00:00"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="002-4" author="vishnu">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                SELECT COUNT(*) FROM employee WHERE employee_id = 4
+            </sqlCheck>
+        </preConditions>
+        <insert tableName="employee">
+            <column name="employee_id" value="4"/>
+            <column name="first_name" value="Bob"/>
+            <column name="last_name" value="Smith"/>
+            <column name="email" value="bob.smith@example.com"/>
+            <column name="department" value="Finance"/>
+            <column name="salary" value="60000"/>
+            <column name="created_at" valueDate="2023-01-01T00:00:00"/>
+            <column name="modified_at" valueDate="2023-01-01T00:00:00"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

@@ -1,9 +1,7 @@
 package com.weshoponline.controller;
 
 import com.weshoponline.model.Customer;
-import com.weshoponline.model.Employee;
 import com.weshoponline.service.CustomerService;
-import com.weshoponline.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

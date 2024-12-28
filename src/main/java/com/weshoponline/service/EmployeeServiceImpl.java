@@ -28,7 +28,7 @@ public class EmployeeServiceImpl implements EmployeeService{
         return employees
                 .stream()
                 .filter(
-                        employee -> employee.getEmpId().equals(empId)
+                        employee -> employee.getEmployeeId().equals(empId)
                 ).findFirst()
                 .orElseThrow( () -> new EmployeeNotFoundException("Employee not found with" +empId));
         //.orElseThrow( () -> new RuntimeException("Employee not found with" +empId));
