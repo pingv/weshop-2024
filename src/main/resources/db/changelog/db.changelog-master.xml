@@ -6,20 +6,28 @@
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
 
     <!-- Include all changelog files -->
-    <include file="db/changelog/changes/001-create-tables.xml"/>
-    <include file="db/changelog/changes/002-insert-data.xml"/>
-    <include file="db/changelog/changes/003-create-sequence.xml"/>
+    <include file="db/changelog/releases/v0.9.0/001-create-tables.xml"/>
+    <include file="db/changelog/releases/v0.9.0/002-insert-data.xml"/>
+    <include file="db/changelog/releases/v0.9.0/003-create-sequence.xml"/>
 
-    <!-- Include initial data SQL file -->
-<!--    <changeSet id="004" author="vishnu">-->
-<!--        <preConditions onFail="MARK_RAN">-->
-<!--            <not>-->
-<!--                <tableExists tableName="customers"/>-->
-<!--            </not>-->
-<!--        </preConditions>-->
-<!--        <sqlFile path="db/changelog/scripts/initial_data.sql"-->
-<!--                 splitStatements="true"-->
-<!--                 stripComments="true"-->
-<!--                 endDelimiter=";"/>-->
-<!--    </changeSet>-->
+    <!-- This is just for example that the SQL can be separately placed and
+    it can be included in the changelog. This is verbose, so avoid this approach -->
+    <changeSet id="004" author="vishnu">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="customers"/>
+            </not>
+        </preConditions>
+        <sqlFile path="db/changelog/releases/v1.0.0/alter-customer-table-add-email.sql"
+                 splitStatements="true"
+                 stripComments="true"
+                 endDelimiter=";"/>
+    </changeSet>
+
+    <!-- Include new column phone for release v1.1.0 -->
+    <include file="db/changelog/releases/v1.1.0/alter-customer-table-add-phone.xml"/>
+
+    <!-- Define Store Procedure to fetch all customers sorted alphabetically - release v1.2.0 -->
+    <include file="db/changelog/releases/v1.2.0/create-get-customers-sorted-procedure.xml"/>
+
 </databaseChangeLog>

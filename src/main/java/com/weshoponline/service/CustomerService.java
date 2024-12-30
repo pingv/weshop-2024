@@ -12,4 +12,5 @@ public interface CustomerService {
     void saveCustomer(Customer customer);
     List<Customer> getCustomersByFirstNameContaining(String subStr);
     List<Customer> getCustomersByFirstNameStartingWith(String subStr);
+    List<Customer> getCustomersSorted();
 }

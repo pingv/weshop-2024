@@ -3,10 +3,14 @@ package com.weshoponline.service;
 import com.weshoponline.model.Customer;
 import com.weshoponline.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Service;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,6 +19,9 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Autowired
     private CustomerRepository customerRepository;
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     @Override
     public List<Customer> getAllCustomers() {
@@ -40,6 +47,23 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public void saveCustomer(Customer customer) {
         customerRepository.save(customer);
+    }
+
+    @Override
+    public List<Customer> getCustomersSorted() {
+        return jdbcTemplate.query("CALL get_customers_sorted()", new CustomerRowMapper());
+    }
+
+    private static class CustomerRowMapper implements RowMapper<Customer> {
+        @Override
+        public Customer mapRow(ResultSet rs, int rowNum) throws SQLException {
+            Customer customer = new Customer();
+            customer.setId(rs.getLong("id"));
+            customer.setFirstName(rs.getString("first_name"));
+            customer.setLastName(rs.getString("last_name"));
+            customer.setEmail(rs.getString("email"));
+            return customer;
+        }
     }
 
     public List<Customer> getDistinctCustomersByLastAndFirstName(String lastName, String firstName) {

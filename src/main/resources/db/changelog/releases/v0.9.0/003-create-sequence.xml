@@ -6,6 +6,11 @@
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
 
     <changeSet id="003" author="vishnu">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <sequenceExists sequenceName="CUSTOMER_SEQ"/>
+            </not>
+        </preConditions>
         <createSequence sequenceName="CUSTOMER_SEQ" startValue="1" incrementBy="1"/>
     </changeSet>
 </databaseChangeLog>

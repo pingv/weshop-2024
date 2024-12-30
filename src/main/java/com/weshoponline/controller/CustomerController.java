@@ -26,15 +26,20 @@ public class CustomerController {
 
     @GetMapping("/{custLN}")
     public List<Customer> getCustomerByLN(@PathVariable("custLN") String custLN) {
-        System.err.println("getCustomerByLN --- controller --- BEEP BEEP BEEP --- " + custLN);
+        System.err.println("getCustomerByLN --- controller" + custLN);
         return customerService.getCustomersByLN(custLN);
     }
 
     @GetMapping("/startswith/{subStr}")
     public List<Customer> getCustomersByFirstNameContaining(@PathVariable("subStr") String subStr) {
-        System.err.println("getCustomerByLN --- controller --- BEEP BEEP BEEP --- " + subStr);
+        System.err.println("getCustomerByLN --- controller" + subStr);
         return customerService.getCustomersByFirstNameStartingWith(subStr);
     }
 
+    @GetMapping("/sorted")
+    public List<Customer> getCustomersSorted() {
+        System.err.println("getCustomersSorted --- controller");
+        return customerService.getCustomersSorted();
+    }
 }
 
