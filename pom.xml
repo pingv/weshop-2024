@@ -94,25 +94,13 @@
 				</dependencies>
 				<executions>
 					<execution>
-						<id>checkstyle-google</id>
-						<phase>verify</phase>
-						<goals>
-							<goal>check</goal>
-						</goals>
-						<configuration>
-							<configLocation>${project.basedir}/config/checkstyle/google_code_style_checks.xml</configLocation>
-							<failOnViolation>true</failOnViolation>
-							<consoleOutput>true</consoleOutput>
-						</configuration>
-					</execution>
-					<execution>
 						<id>checkstyle-custom</id>
 						<phase>verify</phase>
 						<goals>
 							<goal>check</goal>
 						</goals>
 						<configuration>
-							<configLocation>${project.basedir}/config/checkstyle/custom_checks.xml</configLocation>
+							<configLocation>config/checkstyle/custom_checks.xml</configLocation>
 							<failOnViolation>true</failOnViolation>
 							<consoleOutput>true</consoleOutput>
 						</configuration>
@@ -138,30 +126,19 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-checkstyle-plugin</artifactId>
 				<version>3.2.0</version>
-				<inherited>true</inherited>
 				<configuration>
-					<configLocation>config/checkstyle/google_code_style_checks.xml</configLocation>
+					<configLocation>config/checkstyle/custom_checks.xml</configLocation>
+					<linkXRef>false</linkXRef>
+					<sourceDirectories>
+						<sourceDirectory>${project.build.sourceDirectory}</sourceDirectory>
+					</sourceDirectories>
+					<includeTestSourceDirectory>true</includeTestSourceDirectory>
 				</configuration>
 				<reportSets>
 					<reportSet>
-						<id>google-style</id>
 						<reports>
 							<report>checkstyle</report>
 						</reports>
-						<configuration>
-							<configLocation>config/checkstyle/google_code_style_checks.xml</configLocation>
-							<outputName>checkstyle-google</outputName>
-						</configuration>
-					</reportSet>
-					<reportSet>
-						<id>custom-style</id>
-						<reports>
-							<report>checkstyle</report>
-						</reports>
-						<configuration>
-							<configLocation>config/checkstyle/custom_checks.xml</configLocation>
-							<outputName>checkstyle-custom</outputName>
-						</configuration>
 					</reportSet>
 				</reportSets>
 			</plugin>

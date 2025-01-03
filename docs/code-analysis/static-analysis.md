@@ -43,9 +43,16 @@ $ mvn clean install -X -DskipTests
 
 #### Command to View Active Checkstyle Configuration
 Run the following Maven command to display the Checkstyle configuration and the checks it is applying:
-
+By default it applies sun_checks.xml
 ```sh
 mvn checkstyle:checkstyle
+```
+
+To force the use of a specific configuration file, use the following command:
+```sh
+mvn checkstyle:checkstyle -Dcheckstyle.config.location=config/checkstyle/custom_checks.xml
+or
+mvn checkstyle:checkstyle -Dcheckstyle.config.location=config/checkstyle/google_code_style_checks.xml
 ```
 
 This will generate a Checkstyle report (target/site/checkstyle.html) in your project. Open the report in a browser to view details of the checks being performed and the violations in your code.

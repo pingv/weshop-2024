@@ -31,3 +31,15 @@ build/
 
 ### VS Code ###
 .vscode/
+.DS_Store
+data/
+maven-debug.log
+src/main/resources/db/.DS_Store
+src/main/resources/db/changelog/.DS_Store
+src/main/resources/db/changelog/releases/.DS_Store
+.DS_Store
+data/
+maven-debug.log
+src/main/resources/db/.DS_Store
+src/main/resources/db/changelog/.DS_Store
+src/main/resources/db/changelog/releases/.DS_Store
