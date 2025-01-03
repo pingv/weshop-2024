@@ -82,26 +82,89 @@
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
-			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-checkstyle-plugin</artifactId>
 				<version>3.2.0</version>
-				<configuration>
-					<configLocation>config/checkstyle/checkstyle.xml</configLocation>
-				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>com.puppycrawl.tools</groupId>
+						<artifactId>checkstyle</artifactId>
+						<version>10.3.3</version>
+					</dependency>
+				</dependencies>
 				<executions>
 					<execution>
+						<id>checkstyle-google</id>
 						<phase>verify</phase>
 						<goals>
 							<goal>check</goal>
 						</goals>
+						<configuration>
+							<configLocation>${project.basedir}/config/checkstyle/google_code_style_checks.xml</configLocation>
+							<failOnViolation>true</failOnViolation>
+							<consoleOutput>true</consoleOutput>
+						</configuration>
+					</execution>
+					<execution>
+						<id>checkstyle-custom</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>check</goal>
+						</goals>
+						<configuration>
+							<configLocation>${project.basedir}/config/checkstyle/custom_checks.xml</configLocation>
+							<failOnViolation>true</failOnViolation>
+							<consoleOutput>true</consoleOutput>
+						</configuration>
 					</execution>
 				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-site-plugin</artifactId>
+				<version>3.12.1</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-project-info-reports-plugin</artifactId>
+				<version>3.4.5</version>
 			</plugin>
 		</plugins>
 	</build>
 
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<version>3.2.0</version>
+				<inherited>true</inherited>
+				<configuration>
+					<configLocation>config/checkstyle/google_code_style_checks.xml</configLocation>
+				</configuration>
+				<reportSets>
+					<reportSet>
+						<id>google-style</id>
+						<reports>
+							<report>checkstyle</report>
+						</reports>
+						<configuration>
+							<configLocation>config/checkstyle/google_code_style_checks.xml</configLocation>
+							<outputName>checkstyle-google</outputName>
+						</configuration>
+					</reportSet>
+					<reportSet>
+						<id>custom-style</id>
+						<reports>
+							<report>checkstyle</report>
+						</reports>
+						<configuration>
+							<configLocation>config/checkstyle/custom_checks.xml</configLocation>
+							<outputName>checkstyle-custom</outputName>
+						</configuration>
+					</reportSet>
+				</reportSets>
+			</plugin>
+		</plugins>
+	</reporting>
 </project>

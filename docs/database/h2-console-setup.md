@@ -81,3 +81,19 @@ Access the H2 Console at http://localhost:8082/login.jsp?jsessionid=bc1323ae3efc
 ### Queries on h2-console
 
 - SHOW COLUMNS FROM EMPLOYEE;
+
+# H2 Stored Procedures
+
+- H2's approach to stored procedures is different from traditional databases like PostgreSQL or Oracle. Here's why:
+- In databases like PostgreSQL or Oracle, stored procedures are actually stored within the database
+They're written in the database's procedural language (PL/pgSQL, PL/SQL, etc.)
+They run inside the database engine
+- H2 doesn't have true stored procedures. Instead, it allows you to create "aliases" that point to Java methods. 
+- When you "create alias" in H2, you're essentially creating a mapping between:
+  - A database function name
+  - A Java method that exists in your application classpath
+- The key differences:
+  - In PostgreSQL: The procedure code lives IN the database
+  - In H2: The procedure is actually a Java method that H2 calls when you invoke the alias
+
+**Bottomline:** The liquibase changelog scripts pertaining to H2 is not compatible with PostgreSQL or other databases 

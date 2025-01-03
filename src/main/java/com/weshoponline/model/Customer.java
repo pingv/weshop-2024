@@ -6,8 +6,8 @@ import jakarta.persistence.*;
 public class Customer {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "customer_seq_generator") // Refer to the generator
-    @SequenceGenerator(name = "customer_seq_generator", sequenceName = "CUSTOMER_SEQ", allocationSize = 1) // Configure the sequence generator
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "customer_seq_generator")
+    @SequenceGenerator(name = "customer_seq_generator", sequenceName = "CUSTOMER_SEQ", allocationSize = 1)
     private Long id;
     private String firstName;
     private String lastName;
