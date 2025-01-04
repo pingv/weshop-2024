@@ -15,7 +15,14 @@ Java & Full Spectrum Spring, Spring Boot Projects, GraphQL, REST
 To determine if there are any Java compilation issues, run Maven without Checkstyle:
 
 ```sh
-mvn clean install -DskipTests -Dcheckstyle.skiphttp://localhost:8081/customer/Bauer
+mvn clean install -DskipTests -Dcheckstyle.skip
+```
+
+Get jar file:
+```sh
+mvn clean package
+
+java -jar target/weshop-2024-0.0.1-SNAPSHOT.jar
 ```
 
 Spring References:
