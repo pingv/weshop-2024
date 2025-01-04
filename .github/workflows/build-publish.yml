@@ -1,0 +1,36 @@
+name: Build and Publish
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up JDK
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'  # Adjust this to match your project's Java version
+        distribution: 'temurin'
+        cache: 'maven'
+        
+    - name: Build with Maven
+      run: mvn -B package --file pom.xml
+      
+    - name: Upload WAR
+      uses: actions/upload-artifact@v3
+      with:
+        name: app-package
+        path: target/*.war
+        
+    - name: Publish to GitHub Packages
+      run: mvn --batch-mode deploy
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
