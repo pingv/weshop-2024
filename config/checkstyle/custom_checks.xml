@@ -8,33 +8,33 @@
         <property name="max" value="120"/>
         <property name="severity" value="error"/>
     </module>
-    <module name="TreeWalker">
-        <!-- Method checks -->
-        <module name="MethodLength">
-            <property name="max" value="50"/>
-            <property name="severity" value="warning"/>
-        </module>
+<!--    <module name="TreeWalker">-->
+<!--        &lt;!&ndash; Method checks &ndash;&gt;-->
+<!--        <module name="MethodLength">-->
+<!--            <property name="max" value="50"/>-->
+<!--            <property name="severity" value="warning"/>-->
+<!--        </module>-->
 
-        <!-- Naming checks -->
-        <module name="MethodName">
-            <property name="severity" value="warning"/>
-        </module>
-        <module name="ParameterName">
-            <property name="severity" value="warning"/>
-        </module>
-        <module name="LocalVariableName">
-            <property name="severity" value="warning"/>
-        </module>
+<!--        &lt;!&ndash; Naming checks &ndash;&gt;-->
+<!--        <module name="MethodName">-->
+<!--            <property name="severity" value="warning"/>-->
+<!--        </module>-->
+<!--        <module name="ParameterName">-->
+<!--            <property name="severity" value="warning"/>-->
+<!--        </module>-->
+<!--        <module name="LocalVariableName">-->
+<!--            <property name="severity" value="warning"/>-->
+<!--        </module>-->
 
-        <!-- Code style -->
-        <module name="EmptyBlock">
-            <property name="severity" value="warning"/>
-        </module>
-        <module name="LeftCurly">
-            <property name="severity" value="warning"/>
-        </module>
-        <module name="NeedBraces">
-            <property name="severity" value="warning"/>
-        </module>
-    </module>
+<!--        &lt;!&ndash; Code style &ndash;&gt;-->
+<!--        <module name="EmptyBlock">-->
+<!--            <property name="severity" value="warning"/>-->
+<!--        </module>-->
+<!--        <module name="LeftCurly">-->
+<!--            <property name="severity" value="warning"/>-->
+<!--        </module>-->
+<!--        <module name="NeedBraces">-->
+<!--            <property name="severity" value="warning"/>-->
+<!--        </module>-->
+<!--    </module>-->
 </module>

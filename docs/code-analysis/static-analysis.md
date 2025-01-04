@@ -57,6 +57,14 @@ mvn checkstyle:checkstyle -Dcheckstyle.config.location=config/checkstyle/google_
 
 This will generate a Checkstyle report (target/site/checkstyle.html) in your project. Open the report in a browser to view details of the checks being performed and the violations in your code.
 
+#### The difference between mvn checkstyle:checkstyle and mvn checkstyle:check lies in their purpose and output behavior in the context of the Maven Checkstyle Plugin:
+| Aspect                | `mvn checkstyle:checkstyle`             | `mvn checkstyle:check`               |
+|-----------------------|-----------------------------------------|---------------------------------------|
+| **Purpose**           | Generates a report of violations.      | Enforces rules and fails the build.  |
+| **Output**            | Produces a report file (XML/HTML).      | Displays violations in the console.  |
+| **Build Behavior**    | Does not fail the build.                | Fails the build if violations exist. |
+| **Use Case**          | Analysis and review of coding style.    | Enforcing coding standards.          |
+
 ---------------------------------------
 
 ## Sonar
