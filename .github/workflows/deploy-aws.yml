@@ -11,7 +11,7 @@ on:
 env:
   AWS_REGION: us-east-1
   EB_APPLICATION_NAME: weshop-2024
-  EB_ENVIRONMENT_NAME: weshop-2024-env
+  EB_ENVIRONMENT_NAME: weshop-2024-sboot-j5-t1
   DEPLOY_PACKAGE_NAME: weshop-app-${{ github.sha }}.jar
 
 jobs:
