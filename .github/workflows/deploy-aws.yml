@@ -11,7 +11,7 @@ on:
 env:
   AWS_REGION: us-east-1
   EB_APPLICATION_NAME: weshop-2024
-  EB_ENVIRONMENT_NAME: weshop-2024-sboot-j5-t1
+  EB_ENVIRONMENT_NAME: weshop-2024-sboot-j5-t3
   DEPLOY_PACKAGE_NAME: weshop-app-${{ github.sha }}.jar
 
 jobs:
@@ -50,9 +50,11 @@ jobs:
           version_label: ${{ github.sha }}
           region: ${{ env.AWS_REGION }}
           deployment_package: ${{ env.DEPLOY_PACKAGE_NAME }}
-          use_existing_version_if_available: false  # Keep this false
-          create_new_version_if_exists: true
+          use_existing_version_if_available: false
           create_application_version: true
           create_new_environment: true
+          version_description: "Automated deployment via GitHub Actions"
+          environment_description: "Environment created by GitHub Actions"
+          platform_version: "Corretto 21"  # Specify the platform version
           wait_for_deployment: true
           wait_for_environment_recovery: 300
