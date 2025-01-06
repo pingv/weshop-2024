@@ -40,13 +40,24 @@ jobs:
                -L https://maven.pkg.github.com/pingv/weshop-2024/com/pingv/weshop/latest/weshop-latest.jar \
                -o ${{ env.DEPLOY_PACKAGE_NAME }}
 
-      - name: Create Environment if Not Exists
+      - name: Check if Environment Exists
+        id: env_check
         run: |
+          aws elasticbeanstalk describe-environments \
+            --application-name ${{ env.EB_APPLICATION_NAME }} \
+            --environment-names ${{ env.EB_ENVIRONMENT_NAME }} \
+            --query "Environments[?Status=='Ready']" \
+            --output text || echo "NOT_FOUND"
+
+      - name: Create Environment if Not Exists
+        if: steps.env_check.outputs.result == 'NOT_FOUND'
+        run: |
+          echo "Environment does not exist. Creating it now..."
           aws elasticbeanstalk create-environment \
             --application-name ${{ env.EB_APPLICATION_NAME }} \
             --environment-name ${{ env.EB_ENVIRONMENT_NAME }} \
             --solution-stack-name "64bit Amazon Linux 2 v3.4.4 running Corretto 11" \
-            --option-settings file://option-settings.json || true
+            --option-settings file://option-settings.json
 
       - name: Deploy to Elastic Beanstalk
         uses: einaregilsson/beanstalk-deploy@v21
