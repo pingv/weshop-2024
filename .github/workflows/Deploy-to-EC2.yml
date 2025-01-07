@@ -43,48 +43,39 @@ jobs:
           # Copy the JAR file to home directory first
           scp -i ~/.ssh/key.pem target/weshop-2024-0.0.1-SNAPSHOT.jar ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }}:~/app.jar
           
-          # Move the file and ensure data directory exists
           # Create service file content
           echo '[Unit]
           Description=Spring Boot Application
           After=network.target
-          
+
           [Service]
-          User=springapp
-          Group=springapp
+          User=ec2-user
+          Group=ec2-user
           Type=simple
           Environment="SPRING_PROFILES_ACTIVE=prod"
           WorkingDirectory=/opt/myapp
           ExecStart=/usr/bin/java -jar /opt/myapp/app.jar
           SuccessExitStatus=143
           TimeoutStopSec=10
-          Restart=always
+          Restart=on-failure
           RestartSec=5
-          
+
           [Install]
           WantedBy=multi-user.target' > springapp.service
           
           # Copy service file and set up application
           scp -i ~/.ssh/key.pem springapp.service ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }}:~/springapp.service
           ssh -i ~/.ssh/key.pem ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} '
-          sudo mkdir -p /opt/myapp/data
-          sudo chown -R ec2-user:ec2-user /opt/myapp
-          sudo chmod 755 /opt/myapp/data
-          sudo mv ~/app.jar /opt/myapp/app.jar
-          sudo mv ~/springapp.service /etc/systemd/system/springapp.service
-          sudo systemctl daemon-reload
-          sudo systemctl enable springapp
-          sudo systemctl stop springapp || true
-          '
-          
-          # Set permissions and restart service
-          ssh -i ~/.ssh/key.pem ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} '
-          sudo chown ec2-user:ec2-user /opt/myapp/app.jar
-          sudo chmod 500 /opt/myapp/app.jar
-          sudo systemctl daemon-reload
-          sudo systemctl start springapp
-          sleep 5  # Give the service a moment to start
-          sudo systemctl status springapp
+            sudo mkdir -p /opt/myapp/data
+            sudo chown -R ec2-user:ec2-user /opt/myapp
+            sudo chmod 755 /opt/myapp/data
+            sudo mv ~/app.jar /opt/myapp/app.jar
+            sudo mv ~/springapp.service /etc/systemd/system/springapp.service
+            sudo systemctl daemon-reload
+            sudo systemctl enable springapp
+            sudo systemctl start springapp
+            sleep 5
+            sudo systemctl status springapp
           '
 
       - name: Verify Deployment
