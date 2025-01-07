@@ -10,10 +10,10 @@ import com.weshoponline.repository.CustomerRepository;
 
 
 @SpringBootApplication
-public class Application {
+public class WeShopApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(Application.class, args);
+		SpringApplication.run(WeShopApplication.class, args);
 	}
 
 	@Bean

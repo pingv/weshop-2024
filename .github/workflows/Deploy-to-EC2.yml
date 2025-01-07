@@ -2,13 +2,14 @@ name: Deploy to EC2
 
 on:
   push:
-    branches:
-      - main  # or your default branch name
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
 
 jobs:
-  deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
-    
+
     steps:
       - uses: actions/checkout@v3
 
@@ -22,36 +23,43 @@ jobs:
       - name: Build with Maven
         run: mvn clean package -DskipTests
 
-      - name: Deploy to EC2
-        env:
-          EC2_HOST: ${{ secrets.EC2_HOST }}
-          EC2_USERNAME: ${{ secrets.EC2_USERNAME }}
-          SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
+      - name: Verify JAR file
         run: |
-          # Store the SSH key
+          ls -l target/
+          test -f target/weshop-2024-0.0.1-SNAPSHOT.jar || (echo "JAR file not found" && exit 1)
+
+      - name: Setup SSH
+        run: |
           mkdir -p ~/.ssh
-          echo "$SSH_PRIVATE_KEY" > ~/.ssh/deploy_key
-          chmod 600 ~/.ssh/deploy_key
+          echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/key.pem
+          chmod 600 ~/.ssh/key.pem
+          ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Deploy to EC2
+        run: |
+          # Stop the existing service
+          ssh -i ~/.ssh/key.pem ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} 'sudo systemctl stop springapp || true'
           
-          # Add host key checking exception
-          echo "StrictHostKeyChecking no" >> ~/.ssh/config
+          # Copy the JAR file
+          scp -i ~/.ssh/key.pem target/weshop-2024-0.0.1-SNAPSHOT.jar ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }}:/opt/myapp/app.jar
           
-          # Set the exact JAR filename
-          JAR_FILE="target/weshop-2024-0.0.1-SNAPSHOT.jar"
-          
-          echo "Copying JAR file to EC2..."
-          # First, copy to home directory (which we have permission to write to)
-          scp -i ~/.ssh/deploy_key $JAR_FILE $EC2_USERNAME@$EC2_HOST:~/app.jar
-          
-          echo "Moving JAR to /opt/myapp and setting permissions..."
-          # Then use SSH to execute sudo commands to move the file and set permissions
-          ssh -i ~/.ssh/deploy_key $EC2_USERNAME@$EC2_HOST '
-            sudo mv ~/app.jar /opt/myapp/app.jar
-            sudo chown root:root /opt/myapp/app.jar
-            sudo chmod 644 /opt/myapp/app.jar
-            sudo systemctl restart springapp
+          # Set permissions and restart service
+          ssh -i ~/.ssh/key.pem ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} '
+            sudo chown springapp:springapp /opt/myapp/app.jar
+            sudo chmod 500 /opt/myapp/app.jar
+            sudo systemctl daemon-reload
+            sudo systemctl start springapp
+            sudo systemctl status springapp
           '
+
+      - name: Verify Deployment
+        run: |
+          # Wait for application to start
+          sleep 30
           
-          # Clean up sensitive files
-          rm -f ~/.ssh/deploy_key
-          rm -f ~/.ssh/config
+          # Check if application is responding
+          curl --retry 5 --retry-delay 10 http://${{ secrets.EC2_HOST }}:8081/actuator/health || (
+            echo "Application health check failed"
+            ssh -i ~/.ssh/key.pem ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} 'sudo journalctl -u springapp -n 50'
+            exit 1
+          )
