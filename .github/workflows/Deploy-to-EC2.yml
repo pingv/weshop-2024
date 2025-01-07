@@ -1,0 +1,50 @@
+name: Deploy to EC2
+
+on:
+  push:
+    branches:
+      - main  # or your default branch name
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up JDK 21
+      uses: actions/setup-java@v3
+      with:
+        java-version: '21'
+        distribution: 'corretto'
+        cache: maven
+    
+    - name: Build with Maven
+      run: mvn clean package -DskipTests
+    
+    - name: Copy JAR to EC2
+      env:
+        EC2_HOST: ${{ secrets.EC2_HOST }}
+        EC2_USERNAME: ${{ secrets.EC2_USERNAME }}
+        SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
+      run: |
+        # Store the SSH key
+        mkdir -p ~/.ssh
+        echo "$SSH_PRIVATE_KEY" > ~/.ssh/deploy_key
+        chmod 600 ~/.ssh/deploy_key
+        
+        # Add host key checking exception
+        echo "StrictHostKeyChecking no" >> ~/.ssh/config
+        
+        # Find the generated JAR file (adjust the path if needed)
+        JAR_FILE=$(find target -name '*.jar' -not -name '*-sources.jar' -not -name '*-javadoc.jar')
+        
+        # Copy the JAR file to the EC2 instance
+        scp -i ~/.ssh/deploy_key $JAR_FILE $EC2_USERNAME@$EC2_HOST:/opt/myapp/app.jar
+        
+        # Restart the Spring Boot service
+        ssh -i ~/.ssh/deploy_key $EC2_USERNAME@$EC2_HOST "sudo systemctl restart springapp"
+        
+        # Clean up sensitive files
+        rm -f ~/.ssh/deploy_key
+        rm -f ~/.ssh/config
