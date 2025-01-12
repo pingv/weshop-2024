@@ -1,0 +1,83 @@
+flowchart TB
+%% ---------------------
+%% VPC Components Diagram
+%% ---------------------
+%% 1. VPC (Virtual Private Cloud):
+%%    - Your isolated network in AWS
+%%    - Contains all other components
+%%    - Has its own CIDR block (IP range)
+%% ---
+%% 2. Internet Gateway (IGW):
+%%    - Acts as gateway between VPC and internet
+%%    - Required for public subnets
+%%    - One IGW per VPC
+%% ---
+%% 3. Subnets:
+%%    Public Subnet:
+%%      - Has route to IGW via route table
+%%      - For resources needing internet access
+%%    Private Subnet:
+%%      - No direct route to IGW
+%%      - For internal resources
+%% ---
+%% 4. Network ACL (NACL):
+%%    - Stateless firewall at subnet level
+%%    - First line of defense
+%%    - Rules processed in order
+%%    - Can ALLOW or DENY
+%% ---
+%% 5. Security Groups:
+%%    - Stateful firewall at instance level
+%%    - Only ALLOW traffic (implicit deny)
+%%    - No rule order
+%%    - Instance-specific
+%% ---
+%% 6. Route Tables:
+%%    - Define traffic routing within VPC
+%%    - Private: No IGW route
+%%    - Public: Has IGW route
+
+
+    %% External Components
+    Internet((Internet))
+
+    subgraph VPC[Virtual Private Cloud]
+        IGW[Internet Gateway]
+        NACL1[Network ACL]
+        NACL2[Network ACL]
+
+        subgraph 'Public Subnet'
+            SG1[Security Group]
+            EC2_1[EC2 Instance]
+        end
+
+        subgraph 'Private Subnet'
+            SG2[Security Group]
+            EC2_2[EC2 Instance]
+        end
+
+        RT1[Public Route Table]
+        RT2[Private Route Table]
+    end
+
+%% Connections
+    Internet <--> IGW
+    IGW <--> RT1
+    RT1 <--> NACL1
+    NACL1 <--> SG1
+    SG1 <--> EC2_1
+
+    RT2 <--> NACL2
+    NACL2 <--> SG2
+    SG2 <--> EC2_2
+
+%% Styles
+    classDef gateway fill:#f96,stroke:#333
+    classDef security fill:#f66,stroke:#333
+    classDef routing fill:#6f6,stroke:#333
+    classDef instance fill:#69f,stroke:#333
+
+    class IGW gateway
+    class NACL1,NACL2,SG1,SG2 security
+    class RT1,RT2 routing
+    class EC2_1,EC2_2 instance

@@ -1,0 +1,51 @@
+%% EC2 Component Architecture
+%% Created: Jan 2025
+%% https://www.mermaidchart.com/raw/626bb894-0bae-4d3d-8e44-af928995fa3b?theme=light&version=v0.1&format=svg
+
+%%{init: {'layout': 'fixed'}}%%
+
+flowchart TB
+    subgraph subGraph0["Network Settings"]
+        VPC["VPC"]
+        NS["Network Settings"]
+        SUB["Subnet"]
+        RT["Route Table"]
+        IGW["Internet Gateway"]
+    end
+    subgraph Security["Security"]
+        INBOUND["Inbound Rules"]
+        SG["Security Groups"]
+        OUTBOUND["Outbound Rules"]
+    end
+    subgraph subGraph2["Launch Template Components"]
+        AMI["AMI Selection"]
+        LT["Launch Template"]
+        IT["Instance Type"]
+        KP["Key Pair"]
+        ST["Storage Config"]
+        UD["User Data"]
+        subGraph0
+        Security
+    end
+    subgraph subGraph3["Usage Scenarios"]
+        EC2["Single EC2"]
+        ASG["Auto Scaling Group"]
+        MLT["Multiple EC2s"]
+    end
+    subgraph subGraph4["Supporting Services"]
+        EIP["Elastic IP"]
+        EBS["EBS Volumes"]
+        IAM["IAM Role"]
+        ELB["Elastic Load Balancer"]
+        CW["CloudWatch"]
+        SCALE["Scaling Policies"]
+    end
+    LT --> AMI & IT & KP & NS & ST & SG & UD & EC2 & ASG
+    NS --> VPC & SUB & RT & IGW
+    SG --> INBOUND & OUTBOUND
+    ASG --> MLT & ELB & CW
+    EC2 --> EIP & EBS & IAM
+    CW --> SCALE
+    style LT fill:#f9f,stroke:#333,stroke-width:4px
+    style EC2 fill:#bbf,stroke:#333,stroke-width:2px
+    style ASG fill:#bfb,stroke:#333,stroke-width:2px

@@ -3,7 +3,7 @@
 This document describes how branch protection rules are configured in our repository to ensure code quality and security standards.
 
 ## Branch Protection Configuration
-
+mn
 ### Accessing Branch Protection Settings
 1. Navigate to repository on GitHub.com
 2. Go to Settings → Branches
