@@ -41,6 +41,8 @@ public class WeShopApplication {
 			System.out.println("----------------------------------------");
 			System.out.println(customer.toString());
 			System.out.println("");
+			System.out.println("Here's a test");
+
 
 			// fetch customers by last name
 			System.out.println("Customers found with getCustomersByLastName('Bauer'): - using service");
@@ -58,7 +60,6 @@ public class WeShopApplication {
 			});
 			System.out.println("");
 
-			//TODO: Remove this code
 			System.out.println("--------------------------------------------");
 			repository.findByFirstNameStartingWith("J").forEach(j -> {
 				System.out.println(j.toString());
