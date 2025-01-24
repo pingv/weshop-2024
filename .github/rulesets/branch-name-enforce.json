@@ -1,0 +1,28 @@
+{
+  "name": "Branch-Naming-Rule",
+  "target": {
+    "ref_type": "BRANCH",
+    "refs": [
+      "main",
+      "feature/*",
+      "bugfix/*",
+      "hotfix/*",
+      "release/*",
+      "develop"
+    ]
+  },
+  "enforcement": "ACTIVE",
+  "bypass_mode": "NONE",
+  "rules": {
+    "creation": true,
+    "update": false,
+    "deletion": false,
+    "required_linear_history": false,
+    "required_deployments": false,
+    "required_signatures": false,
+    "pull_request": false,
+    "required_status_checks": false,
+    "force_push": false,
+    "required_code_scanning_checks": false
+  }
+}
